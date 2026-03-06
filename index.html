@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+    <title>Sign In | GitHub Issues Tracker</title>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- tailwindcss and daisyui -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body>
+    <div class="min-h-dvh bg-slate-50 flex items-center justify-center p-4 font-sans">
+
+        <div class="card w-full max-w-lg bg-base-100 shadow-xl border border-slate-100 p-8 md:p-12">
+
+            <div class="flex flex-col items-center mb-6">
+                <div class="w-20 h-20 mb-6">
+                    <img src="./assets/github-logo.png" alt="">
+                </div>
+                <h1 class="text-2xl font-bold text-slate-800 tracking-tight">GitHub Issues Tracker</h1>
+                <p class="text-slate-500 text-sm mt-1">Sign in to manage your issues</p>
+            </div>
+
+            <form class="space-y-4">
+                <div class="form-control w-full">
+                    <label class="label px-0">
+                        <span class="label-text font-semibold text-slate-700">Username</span>
+                    </label>
+                    <input type="text" placeholder="Enter Username"
+                        class="input input-bordered w-full bg-white focus:outline-none focus:border-indigo-500" />
+                    <label class="label px-0">
+                        <span class="label-text-alt text-indigo-600">Default: admin</span>
+                    </label>
+                </div>
+
+                <div class="form-control w-full">
+                    <label class="label px-0">
+                        <span class="label-text font-semibold text-slate-700">Password</span>
+                    </label>
+                    <input type="password" placeholder="Enter Password"
+                        class="input input-bordered w-full bg-white focus:outline-none focus:border-indigo-500" />
+                    <label class="label px-0">
+                        <span class="label-text-alt text-indigo-600">Default: admin123</span>
+                    </label>
+                </div>
+
+                <button
+                    class="btn btn-primary w-full bg-indigo-600 hover:bg-indigo-700 border-none normal-case text-lg font-medium text-white shadow-lg">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="divider text-xs text-slate-400 my-6 uppercase tracking-widest font-medium">OR</div>
+
+            <div class="bg-slate-50 rounded-lg p-6 text-center border border-slate-100">
+                <p class="text-xs text-slate-400 mb-3 font-medium">Demo Credentials:</p>
+                <div class="space-y-1">
+                    <p class="text-sm text-slate-700"><strong>Username:</strong> admin</p>
+                    <p class="text-sm text-slate-700"><strong>Password:</strong> admin123</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="./scripts/login.js"></script>
+</body>
+
+</html>
