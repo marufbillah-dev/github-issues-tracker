@@ -16,7 +16,90 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="min-h-dvh bg-slate-50 font-sans">
+    <!-- navbar -->
+    <nav class="navbar bg-white border-b border-slate-200 px-4 md:px-8 lg:px-12 py-3 min-h-[72px] font-sans"
+        style="font-family: 'Geist Sans', sans-serif;">
+        <!-- logo -->
+        <div class="navbar-start flex-1 gap-3">
+            <div class="flex items-center gap-3 max-sm:gap-2 group cursor-pointer shrink-0">
+                <div class="transition-transform group-hover:scale-105 shrink-0">
+                    <img src="./assets/github-logo.png" class="h-8 w-8" alt="GitHub Logo">
+                </div>
+                <span class="text-[18px] md:text-[20px] font-bold tracking-tight text-slate-800 hidden sm:block">
+                    GitHub Issues Tracker
+                </span>
+                <span class="text-[16px] font-bold tracking-tight text-slate-800 sm:hidden">
+                    GitHub Issues Tracker
+                </span>
+            </div>
+        </div>
+
+        <div class="navbar-end flex-none gap-2 md:gap-4">
+            <!-- search bar -->
+            <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10">
+                    <i
+                        class="fa-solid fa-magnifying-glass text-slate-400 text-sm group-focus-within:text-[#5800FF] transition-colors"></i>
+                </div>
+
+                <input type="text" placeholder="Search..."
+                    class="input input-bordered h-10 pl-10 bg-slate-50 border-slate-200 text-sm focus:bg-white focus:outline-[#5800FF] transition-all rounded-lg w-28 sm:w-48 md:w-64 lg:w-80" />
+            </div>
+            <!-- new issue button -->
+            <button
+                class="btn btn-primary bg-[#5800FF] hover:bg-[#4800D4] border-none text-white px-3 sm:px-5 min-h-0 h-10 normal-case font-semibold rounded-lg shadow-sm">
+                <i class="fa-solid fa-plus text-sm"></i>
+                <span class="max-sm:hidden">New Issue</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12 mt-8 space-y-6">
+        <!-- filter buttons -->
+        <div class="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex flex-wrap gap-3">
+            <button
+                class="btn h-10 px-8 bg-[#5800FF] hover:bg-[#4800D4] border-none text-white normal-case font-bold rounded-lg shadow-md transition-all">
+                All
+            </button>
+
+            <button
+                class="btn h-10 px-8 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 normal-case font-medium rounded-lg transition-all">
+                Open
+            </button>
+
+            <button
+                class="btn h-10 px-8 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 normal-case font-medium rounded-lg transition-all">
+                Closed
+            </button>
+        </div>
+        <!-- issues -->
+        <div
+            class="bg-white rounded-xl border border-slate-100 shadow-sm p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-5">
+                <div class="w-12 h-12 bg-indigo-50 flex items-center justify-center rounded-xl">
+                    <img src="./assets/Aperture.png" class="h-6 w-6">
+                </div>
+
+                <div class="space-y-0.5">
+                    <h2 class="text-xl font-bold text-slate-800 tracking-tight">50 Issues</h2>
+                    <p class="text-slate-400 text-sm font-medium">Track and manage your project issues</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span class="text-sm font-bold text-slate-700">Open</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#5800FF]"></span>
+                    <span class="text-sm font-bold text-slate-700">Closed</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <script src="./scripts/./script.js"></script>
 </body>
 
