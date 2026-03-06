@@ -13,6 +13,7 @@
     <!-- tailwindcss and daisyui -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -33,7 +34,7 @@
                     <label class="label px-0">
                         <span class="label-text font-semibold text-slate-700">Username</span>
                     </label>
-                    <input type="text" placeholder="Enter Username"
+                    <input id="username" type="text" placeholder="Enter Username"
                         class="input input-bordered w-full bg-white focus:outline-none focus:border-indigo-500" />
                     <label class="label px-0">
                         <span class="label-text-alt text-indigo-600">Default: admin</span>
@@ -44,14 +45,14 @@
                     <label class="label px-0">
                         <span class="label-text font-semibold text-slate-700">Password</span>
                     </label>
-                    <input type="password" placeholder="Enter Password"
+                    <input id="password" type="password" placeholder="Enter Password"
                         class="input input-bordered w-full bg-white focus:outline-none focus:border-indigo-500" />
                     <label class="label px-0">
                         <span class="label-text-alt text-indigo-600">Default: admin123</span>
                     </label>
                 </div>
 
-                <button
+                <button type="button" onclick="signIn()"
                     class="btn btn-primary w-full bg-indigo-600 hover:bg-indigo-700 border-none normal-case text-lg font-medium text-white shadow-lg">
                     Sign In
                 </button>
