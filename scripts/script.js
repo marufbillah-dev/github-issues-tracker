@@ -141,7 +141,7 @@ const loadClosedIssues = async (btnId) => {
 const loadSearchIssues = async (searchText) => {
   removeActiveStyle();
   loading(true);
-  
+
   searchText = searchInput.value;
   const searchIssuesUrl = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`;
 
@@ -162,29 +162,51 @@ const displayIssueDetails = (details) => {
   modalInfoContainer.innerHTML = "";
   modalInfoContainer.innerHTML = `
             <div class="mb-1">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Issue #${details.id}</span>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                    Issue #${details?.id ? details.id : "000"}
+                </span>
             </div>
+
             <h3 class="text-2xl font-bold text-slate-800 tracking-tight mb-3">
-                ${details.title}
+                ${details?.title ? details.title : "Untitled Issue"}
             </h3>
 
-            <div class="flex flex-wrap items-center gap-3 mb-8 text-sm font-medium">
-                <span class="badge h-7 px-4 ${details.status === "open" ? `bg-[#10a37f]` : `bg-purple-500`} border-none text-white rounded-full">${details.status}</span>
+            <div class="flex flex-wrap items-center max-sm:gap-1 gap-3 mb-8 text-sm font-medium">
+                <span class="badge h-7 px-4 
+                    ${
+                      details?.status === "open"
+                        ? "bg-[#10a37f]"
+                        : details?.status === "closed"
+                          ? "bg-purple-500"
+                          : "bg-slate-300"
+                    } 
+                    border-none text-white rounded-full">
+                    ${details?.status ? details.status : "Unknown"}
+                </span>
+                <div class="max-sm:inline-flex max-sm:w-full hidden"></div>
+                <span class="text-slate-400 max-sm:hidden">•</span>
+                
+                <span class="text-slate-500">Opened by 
+                    <span class="text-slate-700 font-semibold">
+                        ${details?.author ? details.author : "System"}
+                    </span>
+                </span>
+
                 <span class="text-slate-400">•</span>
-                <span class="text-slate-500">Opened by <span
-                        class="text-slate-700 font-semibold">${details.author}</span></span>
-                <span class="text-slate-400">•</span>
-                <span class="text-slate-500">${formatDateTime(details.createdAt)}</span>
+                
+                <span class="text-slate-500">
+                    ${details?.createdAt ? formatDateTime(details.createdAt) : "Date unavailable"}
+                </span>
             </div>
 
             <div class="flex gap-2 mb-8">
-                ${issueLabels(details.labels)}
+                ${details?.labels?.length > 0 ? issueLabels(details.labels) : ""}
             </div>
 
             <div class="mb-8">
                 <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Description</h4>
                 <p class="text-slate-600 leading-relaxed text-[15px]">
-                    ${details.description}
+                    ${details?.description ? details.description : "No description provided for this issue."}
                 </p>
             </div>
 
@@ -192,7 +214,9 @@ const displayIssueDetails = (details) => {
                 <div>
                     <span class="block text-slate-500 text-sm font-medium mb-1.5">Assignee:</span>
                     <div class="flex items-center gap-2">
-                        <span class="text-slate-800 font-bold text-lg">${details.assignee}</span>
+                        <span class="${details?.assignee ? "text-slate-800" : "text-slate-400 font-normal italic"} font-bold text-lg">
+                            ${details?.assignee ? details.assignee : "Unassigned"}
+                        </span>
                     </div>
                 </div>
                 <div>
@@ -203,7 +227,13 @@ const displayIssueDetails = (details) => {
             </div>
 
             <div class="flex justify-between items-center text-[11px] text-slate-400 font-medium px-1">
-                <span>Last updated: ${formatDateTime(details.updatedAt)}</span>
+                <span>
+                    ${
+                      details?.updatedAt
+                        ? `Last updated: ${formatDateTime(details.updatedAt)}`
+                        : "No updates recorded"
+                    }
+                </span>
             </div>
         `;
   issue_details_modal.showModal();
@@ -219,40 +249,51 @@ const displayIssues = async (data) => {
     newCard.className = `card cursor-pointer bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-slate-100 border-t-4 ${issue.status === "open" ? `border-t-[#10a37f]` : `border-t-purple-500`} overflow-hidden transition-all hover:-translate-y-0.5`;
     newCard.setAttribute("onclick", `loadIssueDetails(${issue.id})`);
     newCard.innerHTML = `
-              <div class="p-5">
-                  <div class="flex justify-between items-start mb-4">
-                      ${
-                        issue.status === "open"
-                          ? `<div class="w-8 h-8 rounded-full bg-[#dcfce7] flex items-center justify-center">
-                            <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#10a37f]" fill="none" stroke="currentColor"
-                                stroke-width="2.5">
-                                <circle cx="12" cy="12" r="10" stroke-dasharray="4 4" />
-                            </svg>
-                        </div>`
-                          : `<div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
-                            <svg viewBox="0 0 24 24" class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor"
-                                stroke-width="2.5">
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="M8 12l3 3 5-5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>`
-                      }
-                      <span
-                          class="px-3 py-1 rounded-full ${issue.priority === "high" ? `bg-[#fee2e2] text-[#ef4444]` : issue.priority === "medium" ? `bg-[#fef9c3] text-[#ca8a04]` : `bg-slate-100 text-slate-500`} text-[11px] font-bold tracking-wider uppercase">${issue.priority}</span>
-                  </div>
-      
-                  <h3 class="text-[15px] font-bold text-[#1e293b] leading-snug mb-2">${issue.title}</h3>
-                  <p class="text-[13px] text-slate-500 leading-relaxed mb-4 line-clamp-2">${issue.description}</p>
-      
-                  <div class="flex flex-wrap gap-2 mb-6">
-                      ${issueLabels(issue.labels)}
-                  </div>
-      
-                  <div class="pt-4 border-t border-slate-100 space-y-1">
-                      <p class="text-[12px] text-slate-500">#${issue.id} by <span
-                              class="hover:underline cursor-pointer">${issue.author}</span></p>
-                      <p class="text-[12px] text-slate-400 font-medium">${formatDateTime(issue.createdAt)}</p>
-                  </div>
+                <div class="p-5 flex flex-col h-full gap-5">
+                    <div class="h-full">
+                        <div class="flex justify-between items-start mb-4">
+                        ${
+                          issue.status === "open"
+                            ? `<div class="w-8 h-8 rounded-full bg-[#dcfce7] flex items-center justify-center">
+                                <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#10a37f]" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="10" stroke-dasharray="4 4" />
+                                </svg>
+                            </div>`
+                            : `<div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
+                                <svg viewBox="0 0 24 24" class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M8 12l3 3 5-5" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>`
+                        }
+                        <span
+                            class="px-3 py-1 rounded-full ${issue.priority === "high" ? `bg-[#fee2e2] text-[#ef4444]` : issue.priority === "medium" ? `bg-[#fef9c3] text-[#ca8a04]` : `bg-slate-100 text-slate-500`} text-[11px] font-bold tracking-wider uppercase">${issue?.priority ? issue.priority : "No Priority"}</span>
+                        </div>
+        
+                        <h3 class="text-[15px] font-bold text-[#1e293b] leading-snug mb-2">${issue?.title ? issue.title : "No Title Provided"}</h3>
+                        <p class="text-[13px] text-slate-500 leading-relaxed mb-4 line-clamp-2">
+                            ${issue?.description ? issue.description : "No description available for this issue."}
+                        </p>
+                    </div>
+                    <div class="">
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            ${issue?.labels?.length > 0 ? issueLabels(issue.labels) : '<span class="text-xs text-slate-400">No labels</span>'}
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 space-y-1">
+                            <p class="text-[12px] text-slate-500">
+                                #${issue?.id || "000"} by 
+                                <span class="hover:underline cursor-pointer">
+                                    ${issue?.author ? issue.author : "Anonymous"}
+                                </span>
+                            </p>
+                            <p class="text-[12px] text-slate-400 font-medium">
+                                ${issue?.createdAt ? formatDateTime(issue.createdAt) : "Date unknown"}
+                            </p>
+                        </div>
+                    </div>
               </div>
           `;
 
