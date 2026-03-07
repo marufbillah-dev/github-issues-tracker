@@ -1,7 +1,19 @@
 const cardContainer = document.getElementById("card-container");
 const issuesCountElement = document.getElementById("issues-count");
 const searchInput = document.getElementById("search");
+const loadingElement = document.getElementById("loading");
 const allIssuesUrl = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
+
+// loading while data fetching
+const loading = (status) => {
+  if (status) {
+    cardContainer.classList.add("hidden");
+    loadingElement.classList.remove("hidden");
+  } else {
+    cardContainer.classList.remove("hidden");
+    loadingElement.classList.add("hidden");
+  }
+};
 
 // date and time formatting
 const formatDateTime = (isoDate) => {
@@ -83,6 +95,7 @@ const removeActiveStyle = () => {
 // load all issues
 const loadAllIssues = async (btnId = "all") => {
   activeBtnStyle(btnId);
+  loading(true);
 
   const response = await fetch(allIssuesUrl);
   const data = await response.json();
@@ -101,6 +114,7 @@ const loadIssueDetails = async (issueId) => {
 // load and display open issues
 const loadOpenIssues = async (btnId) => {
   activeBtnStyle(btnId);
+  loading(true);
 
   const response = await fetch(allIssuesUrl);
   const data = await response.json();
@@ -113,6 +127,7 @@ const loadOpenIssues = async (btnId) => {
 // load and display closed issues
 const loadClosedIssues = async (btnId) => {
   activeBtnStyle(btnId);
+  loading(true);
 
   const response = await fetch(allIssuesUrl);
   const data = await response.json();
@@ -125,7 +140,8 @@ const loadClosedIssues = async (btnId) => {
 // load search issue and display
 const loadSearchIssues = async (searchText) => {
   removeActiveStyle();
-
+  loading(true);
+  
   searchText = searchInput.value;
   const searchIssuesUrl = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`;
 
@@ -262,6 +278,7 @@ const displayIssues = async (data) => {
         </div>
     `;
   }
+  loading(false);
 };
 
 // this () call will load all issues by default
