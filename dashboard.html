@@ -59,18 +59,18 @@
         <!-- filter buttons -->
         <div
             class="bg-white rounded-xl border border-slate-100 shadow-sm p-4 flex flex-wrap max-sm:justify-between gap-3">
-            <button
-                class="btn max-sm:flex-1 h-10 px-8 bg-[#5800FF] hover:bg-[#4800D4] border-none text-white normal-case font-bold rounded-lg shadow-md transition-all">
+            <button id="all"
+                class="btn filter-btn max-sm:flex-1 h-10 px-8 bg-[#5800FF] hover:bg-[#4800D4] border-none text-white normal-case font-bold rounded-lg shadow-md transition-all" onclick="loadAllIssues('all')">
                 All
             </button>
 
-            <button
-                class="btn max-sm:flex-1 h-10 px-8 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 normal-case font-medium rounded-lg transition-all">
+            <button id="open"
+                class="btn filter-btn max-sm:flex-1 h-10 px-8 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 normal-case font-medium rounded-lg transition-all" onclick="loadOpenIssues('open')">
                 Open
             </button>
 
-            <button
-                class="btn max-sm:flex-1 h-10 px-8 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 normal-case font-medium rounded-lg transition-all">
+            <button id="closed"
+                class="btn filter-btn max-sm:flex-1 h-10 px-8 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 normal-case font-medium rounded-lg transition-all" onclick="loadClosedIssues('closed')">
                 Closed
             </button>
         </div>

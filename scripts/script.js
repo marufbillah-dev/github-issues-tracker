@@ -1,4 +1,5 @@
 const cardContainer = document.getElementById("card-container");
+const allIssuesUrl = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
 
 // date and time formatting
 const formatDateTime = (isoDate) => {
@@ -54,9 +55,21 @@ const issueLabels = (labelArr) => {
     .join("");
 };
 
+// active button style
+const activeBtnStyle = (btnId) => {
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  filterButtons.forEach((btn) => {
+    btn.className =
+      "btn filter-btn max-sm:flex-1 h-10 px-8 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 normal-case font-medium rounded-lg transition-all";
+  });
+  const activeButton = document.getElementById(btnId);
+  activeButton.className =
+    "btn filter-btn max-sm:flex-1 h-10 px-8 bg-[#5800FF] hover:bg-[#4800D4] border-none text-white normal-case font-bold rounded-lg shadow-md transition-all";
+};
+
 // load all issues
-const loadAllIssues = async () => {
-  const allIssuesUrl = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
+const loadAllIssues = async (btnId = "all") => {
+  activeBtnStyle(btnId);
 
   const response = await fetch(allIssuesUrl);
   const data = await response.json();
@@ -70,6 +83,30 @@ const loadIssueDetails = async (issueId) => {
   const response = await fetch(issueDetailsUrl);
   const data = await response.json();
   displayIssueDetails(data.data);
+};
+
+// load and display open issues
+const loadOpenIssues = async (btnId) => {
+  activeBtnStyle(btnId);
+
+  const response = await fetch(allIssuesUrl);
+  const data = await response.json();
+
+  const issuesData = data.data;
+  const openIssues = issuesData.filter((issue) => issue.status === "open");
+  displayIssues(openIssues);
+};
+
+// load and display closed issues
+const loadClosedIssues = async (btnId) => {
+  activeBtnStyle(btnId);
+
+  const response = await fetch(allIssuesUrl);
+  const data = await response.json();
+
+  const issuesData = data.data;
+  const closedIssues = issuesData.filter((issue) => issue.status === "closed");
+  displayIssues(closedIssues);
 };
 
 // display issue details
@@ -127,6 +164,8 @@ const displayIssueDetails = (details) => {
 
 // display issues
 const displayIssues = async (data) => {
+  cardContainer.innerHTML = "";
+
   data.forEach((issue) => {
     // create new card for each issue
     const newCard = document.createElement("div");
