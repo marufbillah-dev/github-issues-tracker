@@ -1,4 +1,6 @@
 const cardContainer = document.getElementById("card-container");
+const issuesCountElement = document.getElementById("issues-count");
+const searchInput = document.getElementById("search");
 const allIssuesUrl = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
 
 // date and time formatting
@@ -57,6 +59,8 @@ const issueLabels = (labelArr) => {
 
 // active button style
 const activeBtnStyle = (btnId) => {
+  searchInput.value = "";
+
   const filterButtons = document.querySelectorAll(".filter-btn");
   filterButtons.forEach((btn) => {
     btn.className =
@@ -65,6 +69,15 @@ const activeBtnStyle = (btnId) => {
   const activeButton = document.getElementById(btnId);
   activeButton.className =
     "btn filter-btn max-sm:flex-1 h-10 px-8 bg-[#5800FF] hover:bg-[#4800D4] border-none text-white normal-case font-bold rounded-lg shadow-md transition-all";
+};
+
+// remove active button style
+const removeActiveStyle = () => {
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  filterButtons.forEach((btn) => {
+    btn.className =
+      "btn filter-btn max-sm:flex-1 h-10 px-8 bg-white hover:bg-slate-50 border border-slate-200 text-slate-500 normal-case font-medium rounded-lg transition-all";
+  });
 };
 
 // load all issues
@@ -107,6 +120,24 @@ const loadClosedIssues = async (btnId) => {
   const issuesData = data.data;
   const closedIssues = issuesData.filter((issue) => issue.status === "closed");
   displayIssues(closedIssues);
+};
+
+// load search issue and display
+const loadSearchIssues = async (searchText) => {
+  removeActiveStyle();
+
+  searchText = searchInput.value;
+  const searchIssuesUrl = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`;
+
+  const response = await fetch(searchIssuesUrl);
+  const data = await response.json();
+
+  // validation for empty string as input
+  if (searchText) {
+    displayIssues(data.data);
+  } else {
+    loadAllIssues();
+  }
 };
 
 // display issue details
@@ -212,6 +243,25 @@ const displayIssues = async (data) => {
     // append cards to the card container
     cardContainer.appendChild(newCard);
   });
+  const issueCount = cardContainer.children.length;
+  issuesCountElement.innerText = issueCount;
+
+  if (!issueCount) {
+    cardContainer.innerHTML = "";
+    cardContainer.innerHTML = `
+        <div class="col-span-full flex flex-col items-center justify-center py-10 md:py-20 text-center">
+            <div class="bg-slate-200 flex items-center justify-center aspect-square text-[#5800FF] p-6 rounded-full text-4xl mb-6">
+                <i class="fa-solid fa-magnifying-glass-plus"></i>
+            </div>
+
+            <h3 class="text-xl font-semibold text-slate-800 mb-2">No items found</h3>
+            <p class="text-slate-500 max-w-xs mx-auto mb-8">
+                We couldn't find any results matching your search. Try checking your spelling or using different
+                keywords.
+            </p>
+        </div>
+    `;
+  }
 };
 
 // this () call will load all issues by default
